@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "My YouTube Transcript",
+  "version": "1.1.0",
+  "description": "Private YouTube transcripts, summaries and chat. Talks only to YouTube and, when you ask for AI, to the Claude API with your own key.",
+  "permissions": ["storage"],
+  "host_permissions": ["https://www.youtube.com/*", "https://api.anthropic.com/*", "https://i.ytimg.com/*"],
+  "background": { "service_worker": "background.js" },
+  "action": { "default_title": "My YouTube Transcript settings" },
+  "options_ui": { "page": "options.html", "open_in_tab": true },
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
