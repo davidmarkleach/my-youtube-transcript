@@ -4,6 +4,8 @@ A Chrome extension that puts a transcript, AI summary and chat panel next to any
 
 Most extensions like this send your videos and questions through the developer's backend. This one has no backend. The transcript is read from YouTube inside your own browser, and AI requests go straight from your browser to the Claude API using your own key.
 
+![The transcript panel next to a YouTube video, with the line being spoken highlighted](docs/panel.png)
+
 ## What it does
 
 - **Transcript** beside the video: search, language picker, timestamps on or off, copy, download as `.txt`. Click a line to jump there; the line being spoken is highlighted.
@@ -11,7 +13,28 @@ Most extensions like this send your videos and questions through the developer's
 - **Chat**: ask questions about the video, with follow-ups.
 - **Frames** (optional, on by default): Claude also gets still frames from the video, so it can answer questions about slides, charts and what is on screen, and can work on videos that have no captions.
 
+## How Claude "watches" the video
+
+With Frames on, the extension samples up to 120 frames evenly across the video, stamps each with its timestamp, and sends them to Claude alongside the transcript. This is one of the grids Claude receives:
+
+![A grid of video frames, each labeled with its timestamp](docs/frames.jpg)
+
+In Chat, the frame on screen at the moment you ask is sent too, at full size, so questions like "what does this slide say?" work.
+
 ## Where your data goes
+
+```mermaid
+flowchart LR
+    subgraph B["Your browser"]
+        E["Extension"]
+    end
+    Y["YouTube"]
+    C["Claude API<br/>(your own key)"]
+    D["Developer's server"]
+    E -- "captions and preview frames" --> Y
+    E -- "only when you click<br/>Summarize or Send" --> C
+    E -. "never: there isn't one" .-x D
+```
 
 | What | Where it goes |
 |---|---|
@@ -55,6 +78,8 @@ You pay Anthropic directly for what you use. A summary of a 20-minute video with
 - `options.html`, `options.js`: settings page
 
 ## Notes
+
+Screenshots show [Sintel](https://durian.blender.org), © Blender Foundation, licensed under CC BY 3.0.
 
 Built with [Claude Code](https://claude.com/claude-code). Not affiliated with YouTube, Google or Anthropic.
 
