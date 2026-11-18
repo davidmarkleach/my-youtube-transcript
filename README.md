@@ -30,10 +30,9 @@ flowchart LR
     end
     Y["YouTube"]
     C["Claude API<br/>(your own key)"]
-    D["Developer's server"]
+    N["No developer server<br/>No accounts<br/>No analytics"]
     E -- "captions and preview frames" --> Y
     E -- "only when you click<br/>Summarize or Send" --> C
-    E -. "never: there isn't one" .-x D
 ```
 
 | What | Where it goes |
