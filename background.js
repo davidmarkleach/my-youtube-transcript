@@ -141,8 +141,7 @@ async function describeHttpError(res) {
 const MAX_FRAMES = 120;
 const GRID_COLS = 6;
 const GRID_ROWS = 5;
-const TILE_W = 240;
-const TILE_H = 135;
+const TILE_MAX = 240; // longest side of one frame in the grid, in pixels
 
 const gridCache = new Map(); // videoId -> Promise<grids>
 
@@ -216,6 +215,11 @@ async function buildFrameGrids(spec, durationSec) {
     if (!res.ok) throw new Error(`Storyboard sheet ${n} returned ${res.status}`);
     sheets.set(n, await createImageBitmap(await res.blob()));
   }));
+
+  // Keep the video's own aspect ratio (widescreen, 4:3, vertical, ...).
+  const tileScale = TILE_MAX / Math.max(level.w, level.h);
+  const TILE_W = Math.round(level.w * tileScale);
+  const TILE_H = Math.round(level.h * tileScale);
 
   const grids = [];
   const perGrid = GRID_COLS * GRID_ROWS;
